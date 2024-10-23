@@ -5,7 +5,8 @@ What does this script do?
 
     Honk to boost AI
     
-    And more on the way!
+    To-Do: allow AI to honk/ speed up car in front
+
 
     
    
