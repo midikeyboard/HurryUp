@@ -1,49 +1,51 @@
--- Get the player's car and its index
-local playerCar = getCarHandle(0)
-local playerCarIndex = getCarId(playerCar)
-
-function checkForAI(playerCarIndex)
-  -- Get the car in front of the player
-  local carInFront = getCarHandle(playerCarIndex + 1)
-  local distanceAhead = 10
-  -- Check if it's an AI car within 10 units
-  if carInFront ~= nil and getCarClass(carInFront) == 0 and getDistanceBetweenCars(playerCar, carInFront) <= distanceAhead then
-    return carInFront
-  end
-
-  return nil
-end
-
--- Function to increase the speed of an AI car safely
-function increaseAISpeed(carHandle, maxSpeed)
-  -- Get the current speed of the AI car
-  local currentSpeed = getCarSpeed(carHandle)
-
-  -- Ensure the new speed doesn't exceed the maximum
-  local newSpeed = math.min(currentSpeed + 20, maxSpeed)
-
-  -- Set the new speed for the AI car
-  setCarSpeed(carHandle, newSpeed)
-end
-
--- Main loop to check for AI and increase their speed
-local maxAISpeed = 120
-
-function checkForHonk()
-  return isKeyPressed(keys.HORN)
-end
-
+-- Main loop
 while true do
-  -- Check for a honk
-  if checkForHonk() then
-    -- Check for an AI car in front
-    local AI = checkForAI(playerCarIndex)
-    if AI ~= nil then
-      increaseAISpeed(AI, maxAISpeed) -- Adjust max speed as needed
-      print("Honk detected! Increasing speed of AI car.")
-    end
+  -- Retrieve player information
+  local playercar = ac.getCar(0)
+  local sim = ac.getSim()
+
+  -- Get track information
+  local trackName = ac.getTrackName()
+  local trackID = ac.getTrackFullID()
+
+  -- Clear console (optional, depending on environment)
+  ac.clearConsole()
+
+  -- Display information about the player's car
+  print("Player Car:")
+  print("  Position:", playercar.position)
+  print("  Speed:", playercar.speedKmh)
+  print("  Compass:", playercar.compass)
+
+  -- Display information about other cars
+  for i = 1, sim.carsCount - 1 do
+    local car = ac.getCar(i)
+    print("Car " .. i .. ":")
+    print("  Position:", car.position)
+    print("  Speed:", car.speedKmh)
+    print("  Compass:", car.compass)
   end
 
-  -- Wait for a short time before checking again
-  wait(0.1)
+  -- Display information about the track
+  print("Track:")
+  print("  Name:", trackName)
+  print("  ID:", trackID)
+
+  -- Get camera information
+  local cameraPosition = ac.getCameraPosition()
+  local cameraForward = ac.getCameraForward()
+
+  -- Display camera information
+  print("Camera:")
+  print("  Position:", cameraPosition)
+  print("  Forward:", cameraForward)
+
+  -- Calculate compass angle of the camera's forward vector
+  local cameraCompass = ac.getCompassAngle(cameraForward)
+
+  -- Display camera compass
+  print("  Compass:", cameraCompass)
+
+  -- Add a delay to avoid running the loop too fast
+  worker.wait(0.1) -- wait for 0.1 seconds before running the loop again
 end
