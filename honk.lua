@@ -8,9 +8,6 @@ while true do
   local trackName = ac.getTrackName()
   local trackID = ac.getTrackFullID()
 
-  -- Clear console (optional, depending on environment)
-  ac.clearConsole()
-
   -- Display information about the player's car
   print("Player Car:")
   print("  Position:", playercar.position)
