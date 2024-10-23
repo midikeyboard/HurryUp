@@ -40,6 +40,7 @@ while true do
     local AI = checkForAI(playerCarIndex)
     if AI ~= nil then
       increaseAISpeed(AI, maxAISpeed) -- Adjust max speed as needed
+      print("Honk detected! Increasing speed of AI car.")
     end
   end
 
